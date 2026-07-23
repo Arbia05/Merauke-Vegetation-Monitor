@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Merauke Vegetation Monitor — Dashboard WebGIS Terintegrasi</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ===================== SIDEBAR NAVIGASI (FR-NAV-01) ===================== -->
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar__brand">
+      <span class="sidebar__brand-mark">MVM</span>
+      <div>
+        <p class="sidebar__brand-title">Merauke<br/>Vegetation Monitor</p>
+      </div>
+    </div>
+    <nav id="sidebar-nav" class="sidebar__nav" aria-label="Navigasi utama"></nav>
+    <div class="sidebar__footer">
+      <span>Sentinel-2 &middot; Random Forest</span>
+      <span>2023 &ndash; 2025</span>
+    </div>
+  </aside>
+
+  <div class="app__main">
+    <!-- ===================== TOPBAR (FR-NAV-02) ===================== -->
+    <header class="topbar">
+      <button id="sidebar-toggle" class="icon-btn" aria-label="Buka/tutup menu">
+        <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <h2 id="topbar-title" class="topbar__title">Home</h2>
+      <div class="topbar__actions">
+        <button id="btn-unduh" class="btn btn--ghost">
+          <svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>
+          Unduh Data
+        </button>
+        <button id="btn-bantuan" class="btn btn--ghost">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3.5M12 17h.01"/></svg>
+          Bantuan
+        </button>
+      </div>
+    </header>
+
+    <main id="content" class="content">
+
+      <!-- ===================== HOME ===================== -->
+      <section id="section-home" class="page page--active">
+        <div class="hero">
+          <span class="hero__eyebrow">Dashboard Analitik Spasial &middot; Kabupaten Merauke</span>
+          <h1 class="hero__title">Memantau Perubahan Vegetasi<br/>Merauke, 2023&ndash;2025</h1>
+          <p class="hero__desc">
+            Merauke Vegetation Monitor mengolah data klasifikasi vegetasi berbasis citra Sentinel-2
+            dan metode Random Forest menjadi peta interaktif dan dashboard analitik — memuat area
+            penyusutan (loss), penambahan (gain), dan area vegetasi stabil di seluruh cakupan analisis.
+          </p>
+          <div class="hero__cta">
+            <button class="btn btn--primary" data-nav="webgis">Buka WebGIS</button>
+            <button class="btn btn--secondary" data-nav="dashboard">Lihat Dashboard</button>
+          </div>
+        </div>
+
+        <div id="home-stats" class="stat-grid stat-grid--home">
+          <!-- diisi dinamis oleh app.js setelah vegetation_stats.json dimuat -->
+        </div>
+
+        <div class="quicklink-grid">
+          <button class="quicklink-card" data-nav="kabupaten">
+            <span class="quicklink-card__title">Kabupaten Merauke</span>
+            <span class="quicklink-card__desc">Profil wilayah, demografi, dan karakteristik geografis.</span>
+          </button>
+          <button class="quicklink-card" data-nav="food-estate">
+            <span class="quicklink-card__title">Food Estate</span>
+            <span class="quicklink-card__desc">Program lumbung pangan nasional dan perkembangannya.</span>
+          </button>
+          <button class="quicklink-card" data-nav="webgis">
+            <span class="quicklink-card__title">WebGIS</span>
+            <span class="quicklink-card__desc">Peta interaktif perubahan vegetasi per periode.</span>
+          </button>
+          <button class="quicklink-card" data-nav="insight">
+            <span class="quicklink-card__title">Insight</span>
+            <span class="quicklink-card__desc">Temuan utama dan rekomendasi dari hasil analisis.</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ===================== TENTANG ===================== -->
+      <section id="section-tentang" class="page">
+        <h1 class="page-title">Tentang Proyek</h1>
+        <p class="page-lede">
+          Dashboard ini dikembangkan untuk menyajikan hasil analisis perubahan tutupan vegetasi
+          di Kabupaten Merauke secara interaktif — dari peta spasial hingga ringkasan statistik.
+        </p>
+        <div class="card-grid card-grid--2">
+          <div class="card">
+            <h3 class="card__title">Ruang Lingkup</h3>
+            <ul class="bullet-list">
+              <li>Navigasi multi-modul: profil wilayah, program Food Estate, dataset, metodologi, peta interaktif, dan dashboard analitik.</li>
+              <li>Perenderan WebGIS dengan manajemen layer (basemap, kategori data, periode waktu).</li>
+              <li>Visualisasi grafik statistik dinamis berbasis data hasil klasifikasi vegetasi.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 class="card__title">Teknologi</h3>
+            <div class="badge-row">
+              <span class="badge">HTML5 / CSS3 / Vanilla JS</span>
+              <span class="badge">Leaflet.js</span>
+              <span class="badge">Chart.js</span>
+              <span class="badge">Sentinel-2</span>
+              <span class="badge">Random Forest</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== KABUPATEN MERAUKE ===================== -->
+      <section id="section-kabupaten" class="page">
+        <h1 class="page-title">Profil Kabupaten Merauke</h1>
+        <p class="page-lede">Letak, luas wilayah, demografi, dan karakteristik geografis Kabupaten Merauke.</p>
+        <div id="kabupaten-content"><!-- diisi oleh app.js dari data.js --></div>
+      </section>
+
+      <!-- ===================== FOOD ESTATE ===================== -->
+      <section id="section-food-estate" class="page">
+        <h1 class="page-title">Program Food Estate Merauke</h1>
+        <p class="page-lede">Kawasan Sentra Produksi Pangan (KSPP) dan proyek strategis nasional lumbung pangan.</p>
+        <div id="food-estate-content"><!-- diisi oleh app.js dari data.js --></div>
+      </section>
+
+      <!-- ===================== DATASET ===================== -->
+      <section id="section-dataset" class="page">
+        <h1 class="page-title">Dataset</h1>
+        <p class="page-lede">Sumber data yang digunakan dalam analisis perubahan vegetasi.</p>
+        <div id="dataset-content"><!-- diisi oleh app.js --></div>
+      </section>
+
+      <!-- ===================== METODOLOGI ===================== -->
+      <section id="section-metodologi" class="page">
+        <h1 class="page-title">Metodologi</h1>
+        <p class="page-lede">Alur kerja analisis, dari citra satelit hingga peta perubahan vegetasi.</p>
+        <div id="metodologi-content"><!-- diisi oleh app.js --></div>
+      </section>
+
+      <!-- ===================== WEBGIS ===================== -->
+      <section id="section-webgis" class="page page--map">
+        <div class="gis-shell">
+          <div id="map" class="gis-map"></div>
+
+          <!-- Search bar (FR-GIS-03) -->
+          <div class="gis-search">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input id="gis-search-input" type="text" placeholder="Cari lokasi (Kota Merauke, Sota, Wasur...)" autocomplete="off" />
+            <div id="gis-search-results" class="gis-search__results"></div>
+          </div>
+
+          <!-- Basemap & filter toolbar -->
+          <div class="gis-toolbar">
+            <button id="gis-fullscreen" class="gis-tool-btn" title="Fullscreen">
+              <svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+            </button>
+            <button id="gis-measure" class="gis-tool-btn" title="Alat Ukur Jarak">
+              <svg viewBox="0 0 24 24"><path d="M3 17l14-14M3 17h5v-5M12 12l2 2M16 8l2 2"/></svg>
+            </button>
+            <button id="gis-print" class="gis-tool-btn" title="Cetak Peta">
+              <svg viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>
+            </button>
+          </div>
+
+          <!-- Filter distrik/kampung dropdown (FR-GIS-03) -->
+          <div class="gis-filter">
+            <label for="gis-filter-distrik">Filter Distrik</label>
+            <select id="gis-filter-distrik">
+              <option value="">Semua Distrik</option>
+            </select>
+          </div>
+
+          <!-- Coordinate readout -->
+          <div id="gis-coord-readout" class="gis-coord">Lat: — &nbsp; Lng: —</div>
+
+          <!-- Measure result -->
+          <div id="gis-measure-readout" class="gis-measure-readout gis-measure-readout--hidden">
+            Jarak: <span id="gis-measure-value">0</span> km
+            <button id="gis-measure-clear" class="gis-measure-readout__clear">&times;</button>
+          </div>
+
+          <!-- Overview map inset -->
+          <div class="gis-overview">
+            <div id="gis-overview-map"></div>
+          </div>
+
+          <!-- Dynamic legend -->
+          <div id="gis-legend" class="gis-legend">
+            <p class="gis-legend__title">Legenda</p>
+            <div id="gis-legend-items"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== DASHBOARD ===================== -->
+      <section id="section-dashboard" class="page">
+        <div class="dash-header">
+          <div>
+            <h1 class="page-title">Dashboard Analitik</h1>
+            <p class="page-lede">Ringkasan kuantitatif hasil klasifikasi perubahan vegetasi.</p>
+          </div>
+          <div class="period-select">
+            <label for="dash-period">Periode</label>
+            <select id="dash-period">
+              <option value="2023_2024">2023 → 2024</option>
+              <option value="2023_2025" selected>2023 → 2025</option>
+              <option value="2024_2025">2024 → 2025</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="dash-metrics" class="stat-grid"></div>
+
+        <div class="chart-grid">
+          <div class="card chart-card">
+            <h3 class="card__title">Perbandingan Luas Vegetasi per Periode</h3>
+            <canvas id="chart-bar"></canvas>
+          </div>
+          <div class="card chart-card">
+            <h3 class="card__title">Proporsi Perubahan Vegetasi</h3>
+            <canvas id="chart-donut"></canvas>
+          </div>
+          <div class="card chart-card chart-card--wide">
+            <h3 class="card__title">Tren Luas Perubahan antar Periode</h3>
+            <canvas id="chart-line"></canvas>
+            <p class="chart-note">
+              Kelas Stable (±2,8–2,9 juta Ha) sengaja tidak disertakan agar skala tren Loss/Gain tetap
+              terbaca jelas — lihat Bar &amp; Donut chart untuk perbandingan lengkap.
+            </p>
+          </div>
+          <!-- Feature Importance -->
+          <div class="card chart-card chart-card--wide">
+            <div class="chart-card-header">
+              <h3 class="card__title">Feature Importance — Random Forest 2023–2025</h3>
+              <span class="badge badge--accent">CSV Verified</span>
+            </div>
+            <canvas id="chart-feature-importance" style="max-height:320px;"></canvas>
+            <p class="chart-note">Sumber: <code>feature_importance_merauke_2023_2025.csv</code> — NDVI dan NDWI mendominasi sebagai fitur paling informatif dalam klasifikasi vegetasi (>45% gabungan).</p>
+          </div>
+        </div>
+
+        <!-- RF Model Evaluation -->
+        <div class="card" style="margin-top:16px;">
+          <div class="chart-card-header">
+            <h3 class="card__title">Evaluasi Model Random Forest</h3>
+            <span class="badge badge--accent">RF Evaluation CSV</span>
+          </div>
+          <div id="rf-eval-content"><!-- diisi charts.js --></div>
+        </div>
+      </section>
+
+      <!-- ===================== INSIGHT ===================== -->
+      <section id="section-insight" class="page">
+        <h1 class="page-title">Insight &amp; Evaluasi</h1>
+        <p class="page-lede">Temuan utama, evaluasi model, batasan penelitian, dan rekomendasi kebijakan.</p>
+        <div id="insight-content"><!-- diisi oleh app.js --></div>
+      </section>
+
+      <!-- ===================== TENTANG KAMI ===================== -->
+      <section id="section-tentang-kami" class="page">
+        <div class="team-hero">
+          <div class="team-hero__text">
+            <span class="hero__eyebrow">Tim Peneliti &middot; Universitas</span>
+            <h1 class="page-title" style="font-size:32px;">Tentang Kami</h1>
+            <p class="page-lede">Kelompok mahasiswa yang mengembangkan <strong>Merauke Vegetation Monitor</strong> — sistem pemantauan tutupan vegetasi berbasis citra Sentinel-2 dan klasifikasi Random Forest untuk mendukung pengambilan keputusan berbasis data di Kabupaten Merauke.</p>
+          </div>
+          <div class="team-hero__stats">
+            <div class="team-stat"><span class="team-stat__val">3</span><span class="team-stat__lbl">Periode Dianalisis</span></div>
+            <div class="team-stat"><span class="team-stat__val">96%</span><span class="team-stat__lbl">Akurasi Model RF</span></div>
+            <div class="team-stat"><span class="team-stat__val">10m</span><span class="team-stat__lbl">Resolusi Spasial</span></div>
+          </div>
+        </div>
+
+        <div class="team-banner-box">
+          <img src="assets/img/tentang_kami.png" alt="Tim Peneliti Merauke Vegetation Monitor" class="team-banner-img" />
+        </div>
+
+        <div id="team-content" class="team-grid"></div>
+
+        <div class="team-footer-card">
+          <div class="team-footer-card__body">
+            <div>
+              <p class="team-footer-card__title">Teknologi yang Digunakan</p>
+              <div class="badge-row" style="margin-top:10px;">
+                <span class="badge badge--accent">Sentinel-2 Copernicus</span>
+                <span class="badge badge--accent">Random Forest</span>
+                <span class="badge">Leaflet.js</span>
+                <span class="badge">Chart.js</span>
+                <span class="badge">Google Earth Engine</span>
+                <span class="badge">HTML5 / CSS3 / JS</span>
+              </div>
+            </div>
+            <div>
+              <p class="team-footer-card__title">Cakupan Analisis</p>
+              <p style="font-size:13px; color:var(--color-text-secondary); margin:10px 0 0;">Kabupaten Merauke, Provinsi Papua Selatan · 2023–2025 · ~46.791 km²</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ===================== MODAL: BANTUAN ===================== -->
+<div id="modal-bantuan" class="modal-overlay modal-overlay--hidden">
+  <div class="modal">
+    <button class="modal__close" data-close-modal>&times;</button>
+    <h3 class="modal__title">Panduan Singkat</h3>
+    <ul class="bullet-list">
+      <li>Gunakan menu di sisi kiri untuk berpindah antar modul (Profil, Food Estate, WebGIS, Dashboard, dll).</li>
+      <li>Pada modul <strong>WebGIS</strong>: centang/hilangkan centang layer di pojok kanan atas peta, klik poligon untuk detail, gunakan kolom pencarian untuk melompat ke lokasi.</li>
+      <li>Tombol ukur (penggaris) mengaktifkan mode pengukuran jarak — klik beberapa titik di peta, klik dua kali untuk selesai.</li>
+      <li>Pada modul <strong>Dashboard</strong>, ganti dropdown periode untuk memperbarui seluruh kartu metrik dan grafik.</li>
+      <li>Tombol <strong>Unduh Data</strong> di pojok kanan atas mengekspor statistik luas vegetasi (CSV).</li>
+    </ul>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+<script src="js/data.js"></script>
+<script src="js/gis.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+system:index,feature,importance,.geo
+0,B11,8.487942514629832,"{""type"":""MultiPoint"",""coordinates"":[]}"
+1,B12,7.166248938043891,"{""type"":""MultiPoint"",""coordinates"":[]}"
+2,B2,13.146464998006453,"{""type"":""MultiPoint"",""coordinates"":[]}"
+3,B3,5.526839451059997,"{""type"":""MultiPoint"",""coordinates"":[]}"
+4,B4,6.938878727790779,"{""type"":""MultiPoint"",""coordinates"":[]}"
+5,B8,14.175919072561342,"{""type"":""MultiPoint"",""coordinates"":[]}"
+6,NDBI,14.128455083883635,"{""type"":""MultiPoint"",""coordinates"":[]}"
+7,NDMI,12.0400111680959,"{""type"":""MultiPoint"",""coordinates"":[]}"
+8,NDVI,25.769662450051836,"{""type"":""MultiPoint"",""coordinates"":[]}"
+9,NDWI,20.86392553108933,"{""type"":""MultiPoint"",""coordinates"":[]}"

@@ -1,0 +1,2 @@
+system:index,accuracy_gap,accuracy_testing,accuracy_training,analysis_scale_m,area_calculation_scale_m,dataset,f1_score_vegetasi,fn,fp,model,number_of_trees,precision_vegetasi,recall_vegetasi,seed,split_train,testing_total,tn,tp,training_total,vectorize_scale_m,.geo
+0,0.03676470588235292,0.9632352941176471,1.0,10,100,COPERNICUS/S2_SR_HARMONIZED,0.9640287769784173,2,3,Random Forest,100,0.9571428571428572,0.9710144927536232,42,0.7,136,64,67,310,100,"{""type"":""MultiPoint"",""coordinates"":[]}"

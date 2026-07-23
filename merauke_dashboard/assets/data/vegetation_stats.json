@@ -1,0 +1,56 @@
+{
+  "periods": {
+    "2023_2024": {
+      "area_ha": {
+        "non_vegetasi": 6982159.88,
+        "loss": 212093.14,
+        "gain": 305577.82,
+        "stable": 2803943.42
+      },
+      "total_area_analyzed_ha": 3321614.38,
+      "pixel_count": {
+        "non_vegetasi": 709424891,
+        "loss": 21549801,
+        "gain": 31048345,
+        "stable": 284895690
+      }
+    },
+    "2023_2025": {
+      "area_ha": {
+        "non_vegetasi": 6924784.23,
+        "loss": 210226.65,
+        "gain": 362793.04,
+        "stable": 2805970.33
+      },
+      "total_area_analyzed_ha": 3378990.02,
+      "pixel_count": {
+        "non_vegetasi": 703595218,
+        "loss": 21360155,
+        "gain": 36861719,
+        "stable": 285101635
+      }
+    },
+    "2024_2025": {
+      "area_ha": {
+        "non_vegetasi": 6867802.15,
+        "loss": 267404.02,
+        "gain": 326546.26,
+        "stable": 2842021.82
+      },
+      "total_area_analyzed_ha": 3435972.1,
+      "pixel_count": {
+        "non_vegetasi": 697805533,
+        "loss": 27169683,
+        "gain": 33178851,
+        "stable": 288764660
+      }
+    }
+  },
+  "shared_bounds": {
+    "west": 137.64022715890673,
+    "south": -9.11825945992679,
+    "east": 141.01941976317912,
+    "north": -6.618158192693751
+  },
+  "pixel_area_ha": 0.009842000141109655
+}
