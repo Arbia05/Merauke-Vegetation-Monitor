@@ -32,16 +32,18 @@ async function fetchVegStats() {
    SIDEBAR NAV + ROUTING
    ========================================================================== */
 function renderSidebarNav() {
-  const nav = document.getElementById('sidebar-nav');
+  // Render navigation in the topbar
+  const nav = document.getElementById('topbar-nav');
+  if (!nav) return;
   nav.innerHTML = NAV_ITEMS.map((item) => `
     <button class="nav-item" data-nav="${item.id}">
-      <svg viewBox="0 0 24 24">${ICONS[item.icon] || ''}</svg>
-      <span>${item.label}</span>
+      ${item.label}
     </button>
   `).join('');
 }
 
 function navigateTo(sectionId) {
+  // Hide all pages (both inside .content and outside)
   document.querySelectorAll('.page').forEach((el) => el.classList.remove('page--active'));
   document.querySelectorAll('.nav-item').forEach((el) => el.classList.remove('nav-item--active'));
 
@@ -51,15 +53,20 @@ function navigateTo(sectionId) {
   target.classList.add('page--active');
   if (navBtn) navBtn.classList.add('nav-item--active');
 
-  const navItem = NAV_ITEMS.find((n) => n.id === sectionId);
-  document.getElementById('topbar-title').textContent = navItem ? navItem.label : sectionId;
+  // Show/hide the scrollable content area vs full-height webgis
+  const contentEl = document.getElementById('content');
+  if (contentEl) {
+    contentEl.style.display = (sectionId === 'webgis') ? 'none' : '';
+  }
 
-  document.getElementById('sidebar').classList.remove('sidebar--open');
+  const navItem = NAV_ITEMS.find((n) => n.id === sectionId);
+  const titleEl = document.getElementById('topbar-title');
+  if (titleEl) titleEl.textContent = navItem ? navItem.label : sectionId;
 
   // Lazy init modul berat (GIS & Charts) hanya saat pertama kali dibuka
   if (sectionId === 'webgis') {
     GIS.init();
-    setTimeout(() => { window.dispatchEvent(new Event('resize')); }, 60);
+    setTimeout(() => { window.dispatchEvent(new Event('resize')); }, 80);
   }
   if (sectionId === 'dashboard') CHARTS.init();
 }
@@ -461,8 +468,12 @@ function bindModals() {
    MOBILE SIDEBAR TOGGLE
    ========================================================================== */
 function bindSidebarToggle() {
-  document.getElementById('sidebar-toggle').addEventListener('click', () => {
-    document.getElementById('sidebar').classList.toggle('sidebar--open');
+  const toggle = document.getElementById('sidebar-toggle');
+  if (!toggle) return;
+  toggle.addEventListener('click', () => {
+    // Mobile: show/hide nav
+    const nav = document.getElementById('topbar-nav');
+    if (nav) nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
   });
 }
 

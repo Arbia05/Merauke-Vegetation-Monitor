@@ -127,16 +127,16 @@ const CHARTS = (() => {
       data: {
         labels,
         datasets: [
-          { label: 'Loss', data: PERIOD_ORDER.map((p) => Math.round(stats.periods[p].area_ha.loss)), backgroundColor: '#FF4757', borderRadius: 4 },
-          { label: 'Gain', data: PERIOD_ORDER.map((p) => Math.round(stats.periods[p].area_ha.gain)), backgroundColor: '#39FF8A', borderRadius: 4 },
-          { label: 'Stable', data: PERIOD_ORDER.map((p) => Math.round(stats.periods[p].area_ha.stable)), backgroundColor: '#4C9A72', borderRadius: 4 },
+          { label: 'Loss', data: PERIOD_ORDER.map((p) => Math.round(stats.periods[p].area_ha.loss)), backgroundColor: '#E05252', borderRadius: 4 },
+          { label: 'Gain', data: PERIOD_ORDER.map((p) => Math.round(stats.periods[p].area_ha.gain)), backgroundColor: '#2D7A4A', borderRadius: 4 },
+          { label: 'Stable', data: PERIOD_ORDER.map((p) => Math.round(stats.periods[p].area_ha.stable)), backgroundColor: '#A8C5B0', borderRadius: 4 },
         ],
       },
       options: chartBaseOptions('Luas (Ha)'),
     });
   }
 
-  /* ---- FR-DASH-02: Donut Chart — Proporsi Perubahan Vegetasi (per periode terpilih) ---- */
+  /* ---- FR-DASH-02: Donut Chart ---- */
   function renderDonutChart(period) {
     const ctx = document.getElementById('chart-donut');
     if (donutChart) donutChart.destroy();
@@ -145,18 +145,18 @@ const CHARTS = (() => {
       type: 'doughnut',
       data: {
         labels: ['Loss', 'Gain', 'Stable'],
-        datasets: [{ data: [Math.round(p.loss), Math.round(p.gain), Math.round(p.stable)], backgroundColor: ['#FF4757', '#39FF8A', '#4C9A72'], borderWidth: 0 }],
+        datasets: [{ data: [Math.round(p.loss), Math.round(p.gain), Math.round(p.stable)], backgroundColor: ['#E05252', '#2D7A4A', '#A8C5B0'], borderWidth: 0 }],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         cutout: '62%',
-        plugins: { legend: { position: 'bottom', labels: { color: '#93A69D', font: { family: 'Inter', size: 11 }, boxWidth: 10 } } },
+        plugins: { legend: { position: 'bottom', labels: { color: '#4A6358', font: { family: 'Inter', size: 11 }, boxWidth: 10 } } },
       },
     });
   }
 
-  /* ---- FR-DASH-02: Line Chart — Tren Luas antar Periode ---- */
+  /* ---- FR-DASH-02: Line Chart ---- */
   function renderLineChart() {
     const ctx = document.getElementById('chart-line');
     if (lineChart) lineChart.destroy();
@@ -166,8 +166,8 @@ const CHARTS = (() => {
       data: {
         labels,
         datasets: [
-          { label: 'Loss', data: PERIOD_ORDER.map((p) => Math.round(stats.periods[p].area_ha.loss)), borderColor: '#FF4757', backgroundColor: 'rgba(255,71,87,0.1)', tension: 0.35, fill: true, pointRadius: 4 },
-          { label: 'Gain', data: PERIOD_ORDER.map((p) => Math.round(stats.periods[p].area_ha.gain)), borderColor: '#39FF8A', backgroundColor: 'rgba(57,255,138,0.1)', tension: 0.35, fill: true, pointRadius: 4 },
+          { label: 'Loss', data: PERIOD_ORDER.map((p) => Math.round(stats.periods[p].area_ha.loss)), borderColor: '#E05252', backgroundColor: 'rgba(224,82,82,0.08)', tension: 0.35, fill: true, pointRadius: 4, pointBackgroundColor: '#E05252' },
+          { label: 'Gain', data: PERIOD_ORDER.map((p) => Math.round(stats.periods[p].area_ha.gain)), borderColor: '#2D7A4A', backgroundColor: 'rgba(45,122,74,0.08)', tension: 0.35, fill: true, pointRadius: 4, pointBackgroundColor: '#2D7A4A' },
         ],
       },
       options: chartBaseOptions('Luas (Ha)'),
@@ -183,12 +183,12 @@ const CHARTS = (() => {
     const labels = FEATURE_IMPORTANCE.map((f) => f.feature);
     const values = FEATURE_IMPORTANCE.map((f) => f.importance);
 
-    // Gradient color berdasarkan nilai importance
+    // Color by importance value
     const colors = values.map((v) => {
-      if (v >= 20) return '#22D3EE';
-      if (v >= 15) return '#39FF8A';
-      if (v >= 10) return '#4C9A72';
-      return '#5E7169';
+      if (v >= 20) return '#1B5C35';
+      if (v >= 15) return '#2D7A4A';
+      if (v >= 10) return '#4A9A6A';
+      return '#A8C5B0';
     });
 
     featureChart = new Chart(ctx, {
@@ -217,13 +217,13 @@ const CHARTS = (() => {
         },
         scales: {
           x: {
-            ticks: { color: '#93A69D', font: { family: 'JetBrains Mono', size: 10 }, callback: (v) => v + '%' },
-            grid: { color: 'rgba(255,255,255,0.05)' },
-            title: { display: true, text: 'Importance (%)', color: '#5E7169', font: { size: 10 } },
+            ticks: { color: '#4A6358', font: { family: 'JetBrains Mono', size: 10 }, callback: (v) => v + '%' },
+            grid: { color: 'rgba(0,0,0,0.05)' },
+            title: { display: true, text: 'Importance (%)', color: '#8DA89B', font: { size: 10 } },
           },
           y: {
-            ticks: { color: '#EAF2ED', font: { family: 'JetBrains Mono', size: 11, weight: '600' } },
-            grid: { color: 'rgba(255,255,255,0.03)' },
+            ticks: { color: '#1A2921', font: { family: 'JetBrains Mono', size: 11, weight: '600' } },
+            grid: { color: 'rgba(0,0,0,0.04)' },
           },
         },
       },
@@ -237,37 +237,37 @@ const CHARTS = (() => {
 
     const e = RF_EVAL;
     const matrix = [
-      { label: 'True Positive',  value: e.tp, color: '#39FF8A', desc: 'Vegetasi benar terklasifikasi' },
-      { label: 'True Negative',  value: e.tn, color: '#4C9A72', desc: 'Non-veg benar terklasifikasi' },
-      { label: 'False Positive', value: e.fp, color: '#FF4757', desc: 'Non-veg salah jadi vegetasi' },
-      { label: 'False Negative', value: e.fn, color: '#FFD60A', desc: 'Vegetasi salah jadi non-veg' },
+      { label: 'True Positive',  value: e.tp, color: '#2D7A4A', desc: 'Vegetasi benar terklasifikasi' },
+      { label: 'True Negative',  value: e.tn, color: '#4A9A6A', desc: 'Non-veg benar terklasifikasi' },
+      { label: 'False Positive', value: e.fp, color: '#E05252', desc: 'Non-veg salah jadi vegetasi' },
+      { label: 'False Negative', value: e.fn, color: '#E07B2A', desc: 'Vegetasi salah jadi non-veg' },
     ];
 
     el.innerHTML = `
       <div class="rf-eval-grid">
         <div class="rf-metric-card">
           <div class="rf-metric-label">Training Accuracy</div>
-          <div class="rf-metric-value" style="color:#39FF8A">${fmtPct(e.accuracy_training)}</div>
+          <div class="rf-metric-value" style="color:#2D7A4A">${fmtPct(e.accuracy_training)}</div>
           <div class="rf-metric-sub">N=${e.training_total.toLocaleString()} sampel (70% split)</div>
         </div>
         <div class="rf-metric-card">
           <div class="rf-metric-label">Testing Accuracy</div>
-          <div class="rf-metric-value" style="color:#22D3EE">${fmtPct(e.accuracy_testing)}</div>
+          <div class="rf-metric-value" style="color:#1B5C35">${fmtPct(e.accuracy_testing)}</div>
           <div class="rf-metric-sub">N=${e.testing_total.toLocaleString()} sampel (30% split)</div>
         </div>
         <div class="rf-metric-card">
           <div class="rf-metric-label">F1-Score (Vegetasi)</div>
-          <div class="rf-metric-value" style="color:#22D3EE">${fmtPct(e.f1_score)}</div>
+          <div class="rf-metric-value" style="color:#1B5C35">${fmtPct(e.f1_score)}</div>
           <div class="rf-metric-sub">Harmonik mean Precision & Recall</div>
         </div>
         <div class="rf-metric-card">
           <div class="rf-metric-label">Precision</div>
-          <div class="rf-metric-value" style="color:#4C9A72">${fmtPct(e.precision)}</div>
+          <div class="rf-metric-value" style="color:#2D7A4A">${fmtPct(e.precision)}</div>
           <div class="rf-metric-sub">Ketepatan prediksi positif</div>
         </div>
         <div class="rf-metric-card">
           <div class="rf-metric-label">Recall</div>
-          <div class="rf-metric-value" style="color:#4C9A72">${fmtPct(e.recall)}</div>
+          <div class="rf-metric-value" style="color:#2D7A4A">${fmtPct(e.recall)}</div>
           <div class="rf-metric-sub">Kelengkapan deteksi vegetasi</div>
         </div>
         <div class="rf-metric-card rf-metric-card--info">
@@ -276,7 +276,7 @@ const CHARTS = (() => {
             <div class="rf-config-row"><span>Jumlah Pohon</span><span>${e.num_trees}</span></div>
             <div class="rf-config-row"><span>Skala Analisis</span><span>${e.analysis_scale_m}m</span></div>
             <div class="rf-config-row"><span>Dataset</span><span>S2 SR Harmonized</span></div>
-            <div class="rf-config-row"><span>Accuracy Gap</span><span style="color:${e.accuracy_gap < 0.05 ? '#39FF8A' : '#FF4757'}">${(e.accuracy_gap * 100).toFixed(2)}%</span></div>
+            <div class="rf-config-row"><span>Accuracy Gap</span><span style="color:${e.accuracy_gap < 0.05 ? '#2D7A4A' : '#E05252'}">${(e.accuracy_gap * 100).toFixed(2)}%</span></div>
           </div>
         </div>
       </div>
@@ -301,14 +301,14 @@ const CHARTS = (() => {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { position: 'bottom', labels: { color: '#93A69D', font: { family: 'Inter', size: 11 }, boxWidth: 10 } },
+        legend: { position: 'bottom', labels: { color: '#4A6358', font: { family: 'Inter', size: 11 }, boxWidth: 10 } },
       },
       scales: {
-        x: { ticks: { color: '#93A69D', font: { family: 'JetBrains Mono', size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+        x: { ticks: { color: '#4A6358', font: { family: 'Inter', size: 10 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
         y: {
-          ticks: { color: '#93A69D', font: { family: 'JetBrains Mono', size: 10 } },
-          grid: { color: 'rgba(255,255,255,0.05)' },
-          title: { display: true, text: yLabel, color: '#5E7169', font: { size: 10 } },
+          ticks: { color: '#4A6358', font: { family: 'Inter', size: 10 } },
+          grid: { color: 'rgba(0,0,0,0.05)' },
+          title: { display: true, text: yLabel, color: '#8DA89B', font: { size: 10 } },
         },
       },
     };

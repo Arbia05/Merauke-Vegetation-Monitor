@@ -188,6 +188,13 @@ const GIS = (() => {
             mouseout:  e => onOut(e),
             click:     e => onKecamatanClick(e, layer, feature, nameRaw, label, tipe, desc, areaKm2, areaHa),
           });
+          
+          // Add permanent label
+          layer.bindTooltip(label, { 
+            permanent: true, 
+            direction: 'center', 
+            className: 'gis-label-permanent' 
+          }).openTooltip();
         },
       });
 
